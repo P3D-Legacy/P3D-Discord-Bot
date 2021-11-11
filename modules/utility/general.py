@@ -1,3 +1,6 @@
+import asyncio
+import discord
+
 token = open("token.txt", "r").read()
 
 DEBUG = True
@@ -17,17 +20,26 @@ def get_api_uri():
 
 
 def get_category_id():
-    return
+    return 907011413594210324
 
 
 def get_server_chat_channel_id():
-    return
+    return 907011414332420146
 
 
-def get_pd3_category_name():
+def get_p3d_category_name():
     return "Server API"
 
 
-def get_pd3_server_chat_name():
-    return "PD3 Server chat"
+def get_p3d_server_chat_name():
+    return "P3D Server chat"
 
+
+async def get_p3d_category(client):
+    await asyncio.sleep(0.1)
+    return discord.Client.get_channel(client, get_category_id())
+
+
+async def get_p3d_server_client_chat(client):
+    await asyncio.sleep(0.1)
+    return discord.Client.get_channel(client, get_server_chat_channel_id())
