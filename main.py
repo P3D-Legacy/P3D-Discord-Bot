@@ -1,10 +1,17 @@
 import asyncio
+
 import discord
 from discord.ext import commands
 import modules.utility.general as p3d_utility
 import modules.utility.server_connection as sc
 
 client = commands.Bot(command_prefix="!")
+
+client.websocket = None
+
+
+async def init_websocket():
+    client.websocket = await sc.connect_to_p3d(client)
 
 
 @client.event
@@ -21,9 +28,17 @@ async def on_guild_join(guild):
 
 @client.event
 async def on_ready():
+    await init_websocket()
     print('We have logged in as {0.user}'.format(client))
 
-    await asyncio.create_task(sc.connect_to_p3d(p3d_utility.get_api_uri(), client))
+
+@client.event
+async def on_message(context):
+    if context.author == client.user or context.author.bot:
+        return
+
+    if context.channel.id == p3d_utility.get_server_chat_channel_id():
+        await sc.handle_discord_message(context, client.websocket)
 
 
 client.run(p3d_utility.get_token())
