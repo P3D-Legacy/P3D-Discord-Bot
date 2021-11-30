@@ -1,17 +1,10 @@
-import asyncio
-
 import discord
+import asyncio
 from discord.ext import commands
 import modules.utility.general as p3d_utility
 import modules.utility.server_connection as sc
 
 client = commands.Bot(command_prefix="!")
-
-client.websocket = None
-
-
-async def init_websocket():
-    client.websocket = await sc.connect_to_p3d(client)
 
 
 @client.event
@@ -28,7 +21,6 @@ async def on_guild_join(guild):
 
 @client.event
 async def on_ready():
-    await init_websocket()
     print('We have logged in as {0.user}'.format(client))
 
 
@@ -41,4 +33,11 @@ async def on_message(context):
         await sc.handle_discord_message(context, client.websocket)
 
 
+async def read_messages():
+    await client.wait_until_ready()
+    while not client.is_closed():
+        await sc.connect_to_p3d(client)
+        await asyncio.sleep(1)
+
+client.loop.create_task(read_messages())
 client.run(p3d_utility.get_token())

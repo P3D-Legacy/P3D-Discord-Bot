@@ -1,15 +1,13 @@
 import modules.utility.general as p3d_utility
-import json
 
 
-async def handle_response(response, action, client, context=None):
-    if action == 'post':
-        p3d_category = await p3d_utility.get_p3d_category(client)
-        p3d_server_client_chat = await p3d_utility.get_p3d_server_client_chat(client)
-        formatted_message = format_message_according_to_type(response)
+async def handle_response(response, client):
+    p3d_category = await p3d_utility.get_p3d_category(client)
+    p3d_server_client_chat = await p3d_utility.get_p3d_server_client_chat(client)
+    formatted_message = format_message_according_to_type(response)
 
-        if formatted_message:
-            await send_message_to_channel(p3d_category, p3d_server_client_chat, formatted_message)
+    if formatted_message:
+        await send_message_to_channel(p3d_category, p3d_server_client_chat, formatted_message)
 
 
 def format_message_according_to_type(response):

@@ -20,11 +20,11 @@ def get_api_uri():
 
 
 def get_category_id():
-    return 907011413594210324
+    return 895408984700375051
 
 
 def get_server_chat_channel_id():
-    return 907011414332420146
+    return 908438756850274304
 
 
 def get_p3d_category_name():
