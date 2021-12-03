@@ -1,6 +1,5 @@
 import asyncio
 import discord
-import emoji
 import discord.utils as utils
 import re
 
@@ -52,10 +51,12 @@ def clean_text(context):
     remove_formatting = utils.remove_markdown(context.content)
     removed_extern_emojis = re.sub(r'<:\w*:\d*>', '', remove_formatting)
     removed_intern_emojis = remove_emojis(removed_extern_emojis)
+    removed_roles = re.sub(r'<@&\d*>', '', removed_intern_emojis)
+    print(removed_roles)
     for member in context.mentions:
-        removed_intern_emojis = removed_intern_emojis.replace(f'<@!{member.id}>', member.name)
+        removed_roles = removed_roles.replace(f'<@!{member.id}>', member.name)
 
-    return ' '.join(removed_intern_emojis.split())
+    return ' '.join(removed_roles.split())
 
 
 def remove_emojis(data):
