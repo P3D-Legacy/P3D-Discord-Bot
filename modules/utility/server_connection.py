@@ -24,10 +24,12 @@ async def handle_websocket_message(message, client):
 
 
 async def handle_discord_message(context, websocket):
-    constructed_message = {
-        "sender": f"{context.author.name}",
-        "message": f"{context.content}",
-        "type": 2
-    }
-    message_to_send = json.dumps(constructed_message)
-    await websocket.send(message_to_send)
+    cleaned_text = p3d_utility.clean_text(context)
+    if cleaned_text:
+        constructed_message = {
+            "sender": f"{context.author.name}",
+            "message": f"{cleaned_text}",
+            "type": 2
+        }
+        message_to_send = json.dumps(constructed_message)
+        await websocket.send(message_to_send)
