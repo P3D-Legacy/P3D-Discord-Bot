@@ -1,2 +1,5 @@
 git+https://github.com/Rapptz/discord.py.git
 websockets
+requests
+logging
+aiohttp
